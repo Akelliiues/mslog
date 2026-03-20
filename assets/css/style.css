@@ -2,15 +2,18 @@
     --bg-color: #f0f2f5;
     --text-color: #333;
     --card-bg: #ffffff;
-    --border-color: #eeeeee;
-    --input-bg: #ffffff;
-    --input-border: #cccccc;
+    --border-color: #ddd;
+    --input-border: #ccc;
+    --input-bg: #fff;
     --header-bg: #007bff;
     --header-text: #ffffff;
-    --secondary-text: #6c757d;
+    --secondary-text: #555;
+    --btn-cancel-bg: #6c757d;
+    --btn-cancel-hover: #5a6268;
     --btn-back-bg: #6c757d;
-    --btn-edit-bg: #ffc107;
-    --btn-edit-text: #333;
+    
+    /* Font Size scaling variable */
+    --base-font-size: 16px;
 }
 
 .dark-mode {
@@ -29,17 +32,21 @@
 }
 
 /* 1. Global Fix: ป้องกัน Scrollbar แนวนอน และกำหนดรูปแบบพื้นฐาน */
+html,
 body {
+    height: 100%;
+    margin: 0;
     font-family: sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
-    /* สีพื้นหลังอ่อน ๆ */
-    margin: 0;
+    font-size: var(--base-font-size);
+    transition: background-color 0.3s, color 0.3s;
+}
+body {
     padding: 0;
     min-height: 100vh;
     /* *** สำคัญ: ซ่อน Scrollbar แนวนอน ที่เกิดจากการ Scale *** */
     overflow-x: hidden;
-    transition: background-color 0.3s, color 0.3s;
 }
 
 .container {
@@ -208,29 +215,74 @@ body {
     text-overflow: ellipsis;
 }
 
-/* Theme Toggle Button */
-.theme-toggle {
+/* =========================================================================
+   Accessibility & Theme Controls (Top Right)
+   ========================================================================= */
+.accessibility-controls {
     position: fixed;
     top: 20px;
     right: 20px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    z-index: 1000;
+}
+
+.font-btn {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s, transform 0.2s, color 0.3s;
+}
+
+.font-btn:hover {
+    transform: scale(1.1);
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.theme-toggle {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
     width: 40px;
     height: 40px;
-    border-radius: 50%;
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    color: var(--text-color);
+    font-size: 20px;
     cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     display: flex;
-    justify-content: center;
     align-items: center;
-    font-size: 1.5em;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    z-index: 9999;
-    transition: background-color 0.3s, border-color 0.3s, transform 0.2s;
+    justify-content: center;
+    transition: background-color 0.3s, transform 0.2s, color 0.3s;
 }
 
 .theme-toggle:hover {
     transform: scale(1.1);
+}
+
+.dark-mode .font-btn {
+    border-color: var(--border-color);
+}
+.dark-mode .font-btn:hover {
+    background-color: #4dabff;
+    color: #121212;
+    border-color: #4dabff;
+}
+
+.dark-mode .theme-toggle {
+    border-color: var(--border-color);
 }
 
 .theme-toggle:active {
