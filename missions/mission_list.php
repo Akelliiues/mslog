@@ -524,6 +524,49 @@ unset($_SESSION['error']);
             });
         }
 
+        let deleteUrl = '';
+        
+        function confirmDelete(id, subject, url) {
+            deleteUrl = url;
+            document.getElementById('deleteSubject').innerText = "คุณต้องการลบภารกิจ: " + subject + " ใช่หรือไม่?";
+            document.getElementById('deleteModal').style.display = 'block';
+        }
+        
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+        }
+        
+        function proceedDelete() {
+            if (deleteUrl) {
+                window.location.href = deleteUrl;
+            }
+        }
+
+        // --- PWA: Auto-Sync on App Open ---
+        document.addEventListener("visibilitychange", function() {
+            if (document.visibilityState === 'visible') {
+                // เมื่อแอปกลับมาทำงาน (Foreground) จะโหลดหน้าใหม่เพื่อซิงค์ข้อมูลให้เป็นปัจจุบัน
+                // ป้องกันการรีโหลดรัวๆ ถ้าระยะเวลาห่างกันน้อยกว่า 5 วินาที
+                const lastReload = sessionStorage.getItem('last_reload_time') || 0;
+                const now = Date.now();
+                if (now - lastReload > 5000) {
+                    sessionStorage.setItem('last_reload_time', now);
+                    window.location.reload();
+                }
+            }
+        });
+
+        // --- Push Notification Permission Request ---
+        if ('Notification' in window && 'serviceWorker' in navigator) {
+            document.addEventListener('DOMContentLoaded', () => {
+                if (Notification.permission === 'default') {
+                    Notification.requestPermission().then(permission => {
+                        console.log('Notification permission:', permission);
+                    });
+                }
+            });
+        }
+
         // 2. จัดการแถบติดตั้ง (Install Banner)
         let deferredPrompt;
         const installBanner = document.getElementById('installBanner');

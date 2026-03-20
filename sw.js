@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mslog-static-v4.0'; // 🔑 อัปเดตเวอร์ชันแคช
+const CACHE_NAME = 'mslog-static-v4.1'; // 🔑 อัปเดตเวอร์ชันแคช เพื่อบังคับให้ผู้ใช้โหลด SW ตัวใหม่
 const urlsToCache = [
   '/',
   'index.php',
@@ -45,16 +45,40 @@ self.addEventListener('activate', event => {
   return self.clients.claim(); 
 });
 
-// 3. EVENT: FETCH (Cache-First Strategy)
+// 3. EVENT: FETCH (Network-First Strategy for PHP/HTML, Cache-First for static)
 self.addEventListener('fetch', event => {
-  if (event.request.url.startsWith('http')) {
+  const requestUrl = new URL(event.request.url);
+
+  // ใช้ Network First สำหรับ request ที่หน้าเว็บ (PHP, HTML)
+  if (event.request.mode === 'navigate' || requestUrl.pathname.endsWith('.php') || requestUrl.pathname === '/') {
+    event.respondWith(
+      fetch(event.request)
+      .then(response => {
+        // อัปเดตข้อมูลในแคช
+        const responseClone = response.clone();
+        caches.open(CACHE_NAME).then(cache => {
+          cache.put(event.request, responseClone);
+        });
+        return response;
+      })
+      .catch(() => caches.match(event.request))
+    );
+  } else if (event.request.url.startsWith('http')) {
+    // ใช้ Cache First สำหรับไฟล์ static (.css, .png, .js)
     event.respondWith(
       caches.match(event.request)
         .then(response => {
           if (response) {
             return response;
           }
-          return fetch(event.request);
+          return fetch(event.request)
+              .then(networkResponse => {
+                  const clonedResponse = networkResponse.clone();
+                  caches.open(CACHE_NAME).then(cache => {
+                      cache.put(event.request, clonedResponse);
+                  });
+                  return networkResponse;
+              });
         })
     );
   }
