@@ -205,7 +205,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="accessibility-controls">
         <div class="font-dropdown">
-            <button id="btn-toggle-font" class="font-btn" title="ตั้งค่าขนาดอักษร">Aa</button>
+            <button id="btn-toggle-font" class="font-btn" title="ตั้งค่าขนาดอักษร">A</button>
             <div class="font-dropdown-content" id="font-options">
                 <button id="btn-decrease-font" class="font-btn" title="ลดขนาดตัวอักษร">A-</button>
                 <button id="btn-reset-font" class="font-btn" title="ขนาดตัวอักษรปกติ">A</button>
