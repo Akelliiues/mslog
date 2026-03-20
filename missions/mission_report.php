@@ -218,9 +218,14 @@ foreach ($summary_data as $row) {
 </head>
 <body>
     <div class="accessibility-controls">
-        <button id="btn-decrease-font" class="font-btn" title="ลดขนาดตัวอักษร">A-</button>
-        <button id="btn-reset-font" class="font-btn" title="ขนาดตัวอักษรปกติ">A</button>
-        <button id="btn-increase-font" class="font-btn" title="เพิ่มขนาดตัวอักษร">A+</button>
+        <div class="font-dropdown">
+            <button id="btn-toggle-font" class="font-btn" title="ตั้งค่าขนาดอักษร">Aa</button>
+            <div class="font-dropdown-content" id="font-options">
+                <button id="btn-decrease-font" class="font-btn" title="ลดขนาดตัวอักษร">A-</button>
+                <button id="btn-reset-font" class="font-btn" title="ขนาดตัวอักษรปกติ">A</button>
+                <button id="btn-increase-font" class="font-btn" title="เพิ่มขนาดตัวอักษร">A+</button>
+            </div>
+        </div>
         <button class="theme-toggle" title="สลับโหมด"></button>
     </div>
     <div class="header">

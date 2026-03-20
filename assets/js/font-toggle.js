@@ -46,4 +46,22 @@ document.addEventListener('DOMContentLoaded', () => {
             applyFontSize(defaultSize);
         });
     }
+
+    // Dropdown toggle logic for mobile
+    const btnToggle = document.getElementById('btn-toggle-font');
+    const fontOptions = document.getElementById('font-options');
+
+    if (btnToggle && fontOptions) {
+        btnToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            fontOptions.classList.toggle('show');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!fontOptions.contains(e.target) && e.target !== btnToggle) {
+                fontOptions.classList.remove('show');
+            }
+        });
+    }
 });
