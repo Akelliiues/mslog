@@ -1,0 +1,278 @@
+:root {
+    --bg-color: #f0f2f5;
+    --text-color: #333;
+    --card-bg: #ffffff;
+    --border-color: #eeeeee;
+    --input-bg: #ffffff;
+    --input-border: #cccccc;
+    --header-bg: #007bff;
+    --header-text: #ffffff;
+    --secondary-text: #6c757d;
+    --btn-back-bg: #6c757d;
+    --btn-edit-bg: #ffc107;
+    --btn-edit-text: #333;
+}
+
+.dark-mode {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --card-bg: #1e1e1e;
+    --border-color: #333333;
+    --input-bg: #2d2d2d;
+    --input-border: #444444;
+    --header-bg: #1f1f1f;
+    --header-text: #e0e0e0;
+    --secondary-text: #b0b0b0;
+    --btn-back-bg: #444444;
+    --btn-edit-bg: #fb8c00;
+    --btn-edit-text: #ffffff;
+}
+
+/* 1. Global Fix: ป้องกัน Scrollbar แนวนอน และกำหนดรูปแบบพื้นฐาน */
+body {
+    font-family: sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    /* สีพื้นหลังอ่อน ๆ */
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    /* *** สำคัญ: ซ่อน Scrollbar แนวนอน ที่เกิดจากการ Scale *** */
+    overflow-x: hidden;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.container {
+    width: 95%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 10px;
+}
+
+/* 2. สไตล์ของการ์ดภารกิจ (Mission Card) */
+.mission-card {
+    background: var(--card-bg);
+    margin: 10px auto;
+    padding: 10px 15px;
+    /* ลด Padding เล็กน้อย ทำให้การ์ดเริ่มต้นดูเล็กลง */
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+
+    /* เตรียมพร้อมสำหรับการขยาย */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.3s;
+    position: relative;
+    z-index: 1;
+    /* กำหนด z-index เริ่มต้น */
+
+    /* ตั้งค่าความกว้างของการ์ดให้ยืดหยุ่น */
+    width: 95;
+    box-sizing: border-box;
+    /* สำคัญเพื่อให้ Padding ไม่เกินความกว้างที่กำหนด */
+}
+
+/* 3. การจัดการเมื่อเมาส์ Hover (ขยายและยกขึ้น) */
+.mission-card:hover {
+    /* ขยายเพียง 2% (Scale 1.02) เพื่อให้เกิดเอฟเฟกต์ แต่ไม่ล้นหน้าจอ */
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    z-index: 10;
+    /* ดึงการ์ดที่ Hover ขึ้นมาด้านหน้า */
+}
+
+/* 4. สไตล์ของข้อมูลภายในการ์ด */
+.mission-card p {
+    font-size: 0.9em;
+    /* ลดขนาดตัวอักษรในรายละเอียดเล็กน้อย */
+    margin: 5px 0;
+    line-height: 1.5;
+}
+
+.mission-card strong {
+    font-weight: 600;
+}
+
+/* *** START FIX: Ellipsis & No-Wrap สำหรับแถวภารกิจและสถานที่ *** */
+
+/* 1. ภาชนะ (Container) บังคับให้เป็นบรรทัดเดียว */
+.card-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px; 
+    flex-wrap: nowrap; /* ต้องเป็น nowrap เสมอ */
+    overflow: hidden; /* ต้องเป็น hidden เสมอ */
+}
+
+/* 2. หัวข้อ/ไอคอน (Label: strong) ห้ามหดตัว */
+.card-row strong {
+    flex-shrink: 0; /* *** FIXED: ห้ามหดตัว เพื่อป้องกันไอคอน/label ถูกบีบ *** */
+    margin-right: 5px;
+    color: var(--secondary-text);
+    font-size: 0.9em;
+    white-space: nowrap; /* บังคับหัวข้อไม่ให้ตัดคำ*/
+}
+
+/* 3. เนื้อหา (Content: span) ต้องหดและแสดงจุดไข่ปลา */
+.card-row span {
+    font-size: 0.9em;
+    white-space: nowrap; /* บังคับให้อยู่ในบรรทัดเดียว */
+    overflow: hidden; /* ซ่อนข้อความที่เกิน */
+    text-overflow: ellipsis; /* แสดงจุดไข่ปลา */
+    flex-grow: 1; 
+    min-width: 0; /* *** สำคัญ: ยอมให้ย่อได้ถึง 0 เพื่อบังคับ Ellipsis *** */
+}
+/* *** END FIX *** */
+
+/* --- ส่วนที่ถูกปรับปรุง/เพิ่ม เพื่อแก้ปัญหาตกบรรทัดบนมือถือ (Date/Time/Status) --- */
+
+/* 1. Container สำหรับ วันที่/เวลา และ สถานะ */
+.date-status-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 5px;
+    overflow: hidden;
+}
+
+/* 2. สไตล์สำหรับ วันที่และเวลา */
+.date-time-info {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.9em;
+    color: var(--secondary-text);
+    margin-right: 10px;
+    flex-shrink: 1;
+    min-width: 0;
+}
+
+/* 3. สไตล์สำหรับ สถานะ (Status Badge) */
+.mission-status {
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-left: auto;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: bold;
+    color: white;
+}
+
+/* ------------------------------------------------------------- */
+
+/* ส่วนหัวภารกิจ (Mission Title) */
+.mission-header {
+    margin-bottom: 8px;
+    padding-bottom: 5px;
+}
+
+.mission-title {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #007bff;
+    margin: 0;
+}
+
+/* สถานะสี */
+.status-กำลังดำเนินการ {
+    background-color: #ffc107;
+    color: #333;
+}
+
+.status-เสร็จสิ้น {
+    background-color: #28a745;
+}
+
+.status-ยกเลิก {
+    background-color: #dc3545;
+}
+
+/* สถานะเพิ่มเติม (ถ้ามี) */
+.status-รอดำเนินการ {
+    background-color: #007bff;
+}
+
+/* เพิ่ม: สไตล์สำหรับชื่อผู้รับผิดชอบ */
+.responsible-name {
+    font-size: 1.0em;
+    font-weight: bold;
+    color: var(--text-color);
+    /* เพิ่ม Ellipsis สำหรับชื่อที่ยาวมาก */
+    flex-shrink: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    transition: background-color 0.3s, border-color 0.3s, transform 0.2s;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
+}
+
+.theme-toggle:active {
+    transform: scale(0.9);
+}
+
+/* Additional Styles for Dark Mode */
+.dark-mode input[type="text"],
+.dark-mode input[type="password"],
+.dark-mode input[type="date"],
+.dark-mode input[type="time"],
+.dark-mode select,
+.dark-mode textarea {
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    border-color: var(--input-border);
+}
+
+.dark-mode .login-container,
+.dark-mode .container {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+}
+
+.dark-mode .header {
+    background-color: var(--header-bg);
+    color: var(--header-text);
+}
+
+.dark-mode .detail-row strong {
+    color: var(--text-color);
+}
+
+.dark-mode .detail-row span {
+    color: var(--secondary-text);
+}
+
+.dark-mode .btn-back {
+    background-color: var(--btn-back-bg);
+}
+
+.dark-mode .btn-edit {
+    background-color: var(--btn-edit-bg);
+    color: var(--btn-edit-text);
+}

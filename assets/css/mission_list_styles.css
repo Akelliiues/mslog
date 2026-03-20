@@ -1,0 +1,468 @@
+/* ไฟล์: assets/css/mission_list_styles.css (ฉบับแก้ไข) */
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    font-family: sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    overflow-x: hidden; /* **สำคัญมาก: ป้องกัน Scrollbar แนวนอน** */
+    overflow-y: hidden;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.main-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.sticky-area {
+    flex-shrink: 0;
+    width: 100%;
+    background-color: var(--bg-color);
+    z-index: 5;
+    transition: background-color 0.3s;
+}
+
+/* เมนูส่วนหัว (Header) */
+.header {
+    background-color: var(--header-bg);
+    color: var(--header-text);
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.user-info {
+    font-size: 0.8em;
+    margin-top: 5px;
+}
+
+/* ส่วนแสดงรายการการ์ด (ให้ Scroll ได้) */
+.mission-list-scroll {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+    box-sizing: border-box;
+    padding-bottom: 80px;
+}
+
+/* การ์ด */
+.mission-card {
+    background: var(--card-bg);
+    margin: 10px auto;
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    border-left: 5px solid #007bff;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.3s;
+    position: relative;
+    overflow: hidden;
+    width: 95%;
+    box-sizing: border-box;
+}
+
+.mission-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    z-index: 10;
+}
+
+/* *** แก้ไขหลัก: การบังคับให้เป็นบรรทัดเดียวสำหรับการ์ดที่มี Ellipsis *** */
+.card-row {
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap; /* **FIX: ต้องเป็น nowrap เสมอ** */
+    overflow: hidden; /* **FIX: ต้องเป็น hidden เสมอ** */
+}
+/* *************************************************************** */
+
+/* แถวแรก (วันที่/สถานะ) ยังคงอนุญาตให้ Wrap ได้ตามโครงสร้างเดิม */
+.mission-card .card-row:first-child {
+    flex-wrap: wrap; /* แถวแรก (วัน/เวลา/สถานะ) อนุญาตให้ Wrap */
+    align-items: flex-start;
+    overflow: hidden;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 5px;
+}
+
+/* *** แก้ไข: ปรับ flex-shrink และ white-space ให้หัวข้อหลัก *** */
+.card-row strong {
+    margin-right: 5px;
+    color: var(--secondary-text);
+    font-size: 0.9em;
+    flex-shrink: 0; /* **สำคัญ: ป้องกันไอคอน/หัวข้อหลักไม่ให้หด** */
+    white-space: nowrap; /* **สำคัญ: ป้องกันหัวข้อไม่ให้ตัดคำ** */
+}
+/* ************************************************************************************************* */
+
+/* *** แก้ไขหลัก: การตัดข้อความ (Ellipsis) สำหรับภารกิจและสถานที่ *** */
+/* (เฉพาะ span ที่เป็นเนื้อหาใน card-row ที่ไม่ใช่แถวแรก) */
+.card-row span {
+    font-size: 0.9em;
+    white-space: nowrap; /* **FIX: บังคับให้อยู่ในบรรทัดเดียว** */
+    overflow: hidden; /* **FIX: ซ่อนข้อความที่เกิน** */
+    text-overflow: ellipsis; /* **FIX: แสดงจุดไข่ปลาแทน** */
+    flex-grow: 1; /* ใช้พื้นที่ที่เหลือ */
+    min-width: 0; /* **FIX: สำคัญ: อนุญาตให้ย่อได้ถึง 0 เพื่อบังคับ Ellipsis** */
+}
+/* *************************************************************** */
+
+/*
+   NOTE: โค้ดด้านล่างนี้ต้องถูกยกเว้นจากกฎ .card-row span ด้านบน
+   แต่เนื่องจาก .card-row:first-child มี flex-wrap: wrap อยู่แล้ว
+   และโค้ดด้านล่างนี้เป็นการจัดโครงสร้างเฉพาะของแถววัน/เวลา
+   จึงสามารถคงไว้ได้
+*/
+.responsible-name {
+    font-size: 1.0em; /* **ลดขนาดกลับมา** */
+    font-weight: bold;
+    color: var(--text-color);
+    flex-shrink: 1; /* อนุญาตให้หดตัวได้หากชื่อยาวมาก */
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.card-row .day-time-display {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    min-width: 0;
+    overflow: visible;
+    white-space: normal;
+    text-overflow: clip;
+    flex-wrap: wrap;
+}
+
+.card-row .day-time-display .day-name {
+    font-weight: bold;
+    color: var(--text-color);
+    font-size: 1.0em;
+    margin-right: 5px;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.card-row .day-time-display .date-time-info {
+    font-size: 1.0em;
+    color: var(--text-color);
+    font-weight: bold;
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.8em;
+    flex-shrink: 0;
+    white-space: nowrap;
+    margin-left: auto;
+    margin-top: 2px;
+}
+
+
+.card-row:first-child strong {
+    display: none;
+}
+
+/* สถานะสี (ส่วนเดิม) */
+.status-กำลังดำเนินการ {
+    background-color: #ffc107;
+    color: #333;
+}
+/* ... โค้ดสีสถานะอื่น ๆ (คงเดิม) ... */
+.status-เสร็จสิ้น {
+    background-color: #28a745;
+    color: white;
+}
+
+.status-ยกเลิก {
+    background-color: #dc3545;
+    color: white;
+}
+
+.status-รอดำเนินการ {
+    background-color: #007bff;
+    color: white;
+}
+
+.status-เกินกำหนด {
+    background-color: #8b0000; /* Dark Red */
+    color: white;
+}
+
+
+.fab {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: #28a745;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 50px;
+    font-size: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    text-decoration: none;
+    z-index: 60;
+}
+
+.summary-bar {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    background-color: var(--card-bg);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    border-radius: 8px;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.summary-item {
+    flex: 1;
+    padding: 0 5px;
+    border-right: 1px solid var(--border-color);
+}
+
+.summary-item:last-child {
+    border-right: none;
+}
+
+.summary-label {
+    font-size: 0.75em;
+    color: var(--secondary-text);
+    font-weight: bold;
+    display: block;
+}
+
+.summary-count {
+    font-size: 1.5em;
+    font-weight: bold;
+    display: block;
+    color: #007bff;
+}
+
+/* เมนูตัวกรองรวม */
+.filter-container {
+    margin: 0 10px 15px 10px;
+    background-color: var(--card-bg);
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+}
+
+.filter-row {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0;
+}
+
+.filter-row-main {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.filter-btn {
+    text-decoration: none;
+    padding: 10px 5px;
+    flex-grow: 1;
+    text-align: center;
+    font-size: 0.9em;
+    font-weight: 500;
+    color: #6c757d;
+    background-color: transparent;
+    transition: color 0.2s, border-bottom 0.2s;
+    border: none;
+    white-space: nowrap;
+}
+
+.filter-btn:hover {
+    color: #007bff;
+}
+
+.filter-btn.active {
+    color: #007bff;
+    font-weight: bold;
+    border-bottom: 3px solid #007bff;
+    background-color: transparent;
+}
+
+.filter-btn.active:hover {
+    color: #0056b3;
+}
+
+.search-footer-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--card-bg);
+    padding: 8px 10px;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 50;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+
+.search-form {
+    display: flex;
+    gap: 5px;
+    max-width: 980px;
+    margin: 0 auto;
+    position: relative;
+    width: 100%;
+}
+
+.search-input-wrapper {
+    flex-grow: 1;
+    display: flex;
+    position: relative;
+}
+
+.search-input {
+    flex-grow: 1;
+    padding: 8px 12px;
+    padding-right: 35px;
+    border: 1px solid var(--input-border);
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+.clear-search-btn {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #999;
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 0 5px;
+    line-height: 1;
+    text-decoration: none;
+    z-index: 10;
+}
+
+.clear-search-btn:hover {
+    color: #333;
+}
+
+.search-btn {
+    flex-shrink: 0;
+    padding: 8px 15px;
+    background-color: #3c4900ff; /* คุณอาจจะต้องเปลี่ยนสีนี้เป็น #007bff เพื่อให้เข้ากับ Header */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.search-btn:hover {
+    background-color: #0056b3;
+}
+
+/* *** CSS สำหรับ Pagination (ส่วนเดิม) *** */
+.pagination-container {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    padding-left: 0;
+    list-style: none;
+}
+
+.page-item {
+    margin: 0 2px;
+}
+
+.page-link {
+    display: block;
+    padding: .5rem .75rem;
+    line-height: 1.25;
+    color: #007bff;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: .25rem;
+    text-decoration: none;
+    transition: all 0.3s;
+    font-size: 0.9em;
+}
+
+.page-link:hover {
+    background-color: #e9ecef;
+}
+
+.page-item.active .page-link {
+    z-index: 1;
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    pointer-events: none;
+}
+
+.page-item.disabled .page-link {
+    color: var(--secondary-text);
+    pointer-events: none;
+    background-color: var(--bg-color);
+}
+
+/* Dark Mode Overrides for Specific Elements */
+.dark-mode .status-badge {
+    opacity: 0.9;
+}
+
+.dark-mode .summary-count {
+    color: #4dabff;
+}
+
+.dark-mode .filter-btn {
+    color: var(--secondary-text);
+}
+
+.dark-mode .filter-btn.active {
+    color: #4dabff;
+    border-bottom-color: #4dabff;
+}
+
+.dark-mode .page-link {
+    color: #4dabff;
+}
+
+.dark-mode .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+}
