@@ -203,7 +203,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
-    <button class="theme-toggle" title="สลับโหมด"></button>
+    <div class="accessibility-controls">
+        <button id="btn-decrease-font" class="font-btn" title="ลดขนาดตัวอักษร">A-</button>
+        <button id="btn-reset-font" class="font-btn" title="ขนาดตัวอักษรปกติ">A</button>
+        <button id="btn-increase-font" class="font-btn" title="เพิ่มขนาดตัวอักษร">A+</button>
+        <button class="theme-toggle" title="สลับโหมด"></button>
+    </div>
     <div class="login-container">
         <h2>ระบบบันทึกภารกิจ (MSLog)</h2>
         <?php if ($error_message): ?>
@@ -278,6 +283,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </script>
 
 <script src="assets/js/theme-toggle.js"></script>
+<script src="assets/js/font-toggle.js"></script>
 </body>
 
 </html>

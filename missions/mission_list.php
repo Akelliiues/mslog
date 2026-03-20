@@ -314,7 +314,12 @@ unset($_SESSION['error']);
 </head>
 
 <body>
-    <button class="theme-toggle" title="สลับโหมด"></button>
+    <div class="accessibility-controls">
+        <button id="btn-decrease-font" class="font-btn" title="ลดขนาดตัวอักษร">A-</button>
+        <button id="btn-reset-font" class="font-btn" title="ขนาดตัวอักษรปกติ">A</button>
+        <button id="btn-increase-font" class="font-btn" title="เพิ่มขนาดตัวอักษร">A+</button>
+        <button class="theme-toggle" title="สลับโหมด"></button>
+    </div>
     <div class="main-wrapper">
         <div class="sticky-area">
             
@@ -555,6 +560,7 @@ unset($_SESSION['error']);
         }
     </script>
     <script src="../assets/js/theme-toggle.js"></script>
+    <script src="../assets/js/font-toggle.js"></script>
 </body>
 
 </html>
